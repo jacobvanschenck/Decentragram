@@ -27,6 +27,7 @@ function Navbar(_account) {
               width='30'
               height='30'
               src={`data:image/png;base64,${new Identicon(account, 30).toString()}`}
+              alt=''
             />
             : <span></span>
           }

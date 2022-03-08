@@ -9,6 +9,7 @@ function App() {
   const [web3, setWeb3] = useState(undefined)
   const [contract, setContract] = useState(undefined)
   const [accounts, setAccounts] = useState([])
+  const [buffer, setBuffer] = useState(undefined)
 
   useEffect(() => {
     const init = async () => {
@@ -29,6 +30,18 @@ function App() {
             accounts.length > 0
         )
     }
+
+  const captureFile = event => {
+    event.preventDefault()
+    const file = event.target.files[0]
+    const reader = new window.FileReader()
+    reader.readAsArrayBuffer(file)
+
+    reader.onloadend = () => {
+      setBuffer(Buffer(reader.result))
+      console.log(buffer)
+    }
+  }
   
   return (
     <div>
@@ -36,7 +49,7 @@ function App() {
       { !isReady()
         ? <div id="loader" className="text-center mt-5"><p>Loading...</p></div>
         : <Main
-          // Code...
+          captureFile={captureFile}
           />
       }
     </div>
