@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.8.0;
 
 contract Decentragram {
   string public name = "Decentragram";
@@ -41,10 +41,10 @@ contract Decentragram {
     imageCount++;
  
     //add Image to contract
-    images[imageCount] = Image(imageCount, _imgHash, _description, 0, msg.sender);
+    images[imageCount] = Image(imageCount, _imgHash, _description, 0, payable(msg.sender));
 
     //Trigger an event
-    emit ImageCreated(imageCount, _imgHash, _description, 0, msg.sender);
+    emit ImageCreated(imageCount, _imgHash, _description, 0, payable(msg.sender));
   }
 
   //tip images
@@ -59,7 +59,7 @@ contract Decentragram {
     address payable _author = _image.author;
 
     //pay author
-    address(_author).transfer(msg.value);
+    _author.transfer(msg.value);
 
     //update tip amount
     _image.tipAmount = _image.tipAmount + msg.value;
