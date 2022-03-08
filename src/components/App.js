@@ -1,35 +1,46 @@
-import React, { Component } from 'react';
-import Web3 from 'web3';
-import Identicon from 'identicon.js';
-import './App.css';
-import Decentragram from '../abis/Decentragram.json'
+import React, {useState, useEffect} from 'react'
+import {getWeb3, getContract, getAccounts} from './utils'
+import './App.css'
 import Navbar from './Navbar'
 import Main from './Main'
 
 
-class App extends Component {
+function App() {
+  const [web3, setWeb3] = useState(undefined)
+  const [contract, setContract] = useState(undefined)
+  const [accounts, setAccounts] = useState([])
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      account: '',
+  useEffect(() => {
+    const init = async () => {
+      const web3 = await getWeb3()
+      const contract = await getContract(web3)
+      const accounts = await getAccounts()
+      setWeb3(web3)
+      setContract(contract)
+      setAccounts(accounts)
     }
-  }
+    init()
+  }, [])
 
-  render() {
-    return (
-      <div>
-        <Navbar account={this.state.account} />
-        { this.state.loading
-          ? <div id="loader" className="text-center mt-5"><p>Loading...</p></div>
-          : <Main
-            // Code...
-            />
-          }
-        }
-      </div>
-    );
-  }
+  const isReady = () => {
+        return (
+            typeof web3 !== 'undefined' &&
+            typeof contract !== 'undefined' &&
+            accounts.length > 0
+        )
+    }
+  
+  return (
+    <div>
+      <Navbar account={accounts[0]}/>
+      { !isReady()
+        ? <div id="loader" className="text-center mt-5"><p>Loading...</p></div>
+        : <Main
+          // Code...
+          />
+      }
+    </div>
+  );
 }
 
 export default App;
