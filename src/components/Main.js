@@ -1,7 +1,7 @@
 import Identicon from 'identicon.js';
 import React, {useState} from 'react'
 
-function Main({captureFile, uploadImage, images}) {
+function Main({captureFile, uploadImage, images, tipImageOwner, web3}) {
   const [description, setDescription] = useState('')
 
   return (
@@ -54,16 +54,16 @@ function Main({captureFile, uploadImage, images}) {
                       </li>
                       <li key={key} className="list-group-item py-2">
                         <small className="float-left mt-1 text-muted">
-                          TIPS: ETH
+                          TIPS: {web3.utils.fromWei(image.tipAmount.toString(), 'Ether')} ETH
                         </small>
                         <button
                           className="btn btn-link btn-sm float-right pt-0"
                           name={image.id}
-                          // onClick={(event) => {
-                          //   let tipAmount = window.web3.utils.toWei('0.1', 'Ether')
-                          //   console.log(event.target.name, tipAmount)
-                            //tipImageOwner(event.target.name, tipAmount)
-                          // }}
+                          onClick={(event) => {
+                            let tipAmount = web3.utils.toWei('0.1', 'Ether')
+                            console.log(event.target.name)
+                            tipImageOwner(event.target.name, tipAmount)
+                          }}
                         >
                           TIP 0.1 ETH
                         </button>

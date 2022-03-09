@@ -79,6 +79,15 @@ function App() {
       })
     })
   }
+
+  const tipImageOwner = async (id, tipAmount) => {
+    setLoading(true)
+    await decentragram.methods.tipImageOwner(id).send({from: accounts[0], value: tipAmount}).on('transactionHash', async (hash) => {
+      console.log('not done')
+      setLoading(false)
+      console.log('done')
+    })
+  }
   
   return (
     <div>
@@ -89,6 +98,8 @@ function App() {
           captureFile={captureFile}
           uploadImage={uploadImage}
           images={images}
+          tipImageOwner={tipImageOwner}
+          web3={web3}
           />
       }
     </div>
