@@ -1,8 +1,7 @@
 import React, {useState} from 'react'
 
-function Main({captureFile}) {
+function Main({captureFile, uploadImage}) {
   const [description, setDescription] = useState('')
-  //const captureFile = _captureFile.captureFile
 
   return (
     <div className="container-fluid mt-5">
@@ -15,6 +14,7 @@ function Main({captureFile}) {
 
             <form onSubmit={(event) => {
               event.preventDefault()
+              uploadImage(description)
             }}>
               <input type='file' accept=".jpg, .jpeg, .png, .bmp, .gif" onChange={captureFile}/>
               <div className="form-group mr-sm-2">
