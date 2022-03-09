@@ -1,7 +1,8 @@
 import React, {useState} from 'react'
 
-function Main(captureFile) {
+function Main({captureFile}) {
   const [description, setDescription] = useState('')
+  //const captureFile = _captureFile.captureFile
 
   return (
     <div className="container-fluid mt-5">

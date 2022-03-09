@@ -23,6 +23,10 @@ function App() {
     init()
   }, [])
 
+  useEffect(() => {
+    console.log(buffer)
+  }, [buffer])
+
   const isReady = () => {
         return (
             typeof web3 !== 'undefined' &&
@@ -39,7 +43,6 @@ function App() {
 
     reader.onloadend = () => {
       setBuffer(Buffer(reader.result))
-      console.log(buffer)
     }
   }
   

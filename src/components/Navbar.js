@@ -2,8 +2,8 @@ import React from 'react'
 import Identicon from 'identicon.js';
 import photo from '../photo.png'
 
-function Navbar(_account) {
-  let account = _account.account
+function Navbar({account}) {
+  //let account = _account.account
   
   return (
     <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
