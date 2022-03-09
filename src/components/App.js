@@ -13,6 +13,7 @@ function App() {
   const [decentragram, setDecentragram] = useState(undefined)
   const [accounts, setAccounts] = useState([])
   const [buffer, setBuffer] = useState(undefined)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const init = async () => {
@@ -34,7 +35,8 @@ function App() {
         return (
             typeof web3 !== 'undefined' &&
             typeof decentragram !== 'undefined' &&
-            accounts.length > 0
+            accounts.length > 0 &&
+            !loading
         )
     }
 
@@ -52,12 +54,17 @@ function App() {
   const uploadImage = (description) => {
     console.log('Submitting file to ipfs...')
 
-    ipfs.add(buffer, (error, result) => {
+    ipfs.add(buffer, async (error, result) => {
       console.log('IPFS result', result)
       if(error){
         console.log(error)
         return
       }
+      
+      setLoading(true)
+      await decentragram.methods.uploadImage(result[0].hash, description).send({from: accounts[0]}).on('transactionHash', (hash) => {
+        setLoading(false)
+      })
     })
   }
   

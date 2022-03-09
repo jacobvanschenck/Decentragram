@@ -14,7 +14,7 @@ function Main({captureFile, uploadImage}) {
 
             <form onSubmit={(event) => {
               event.preventDefault()
-              uploadImage(description)
+              uploadImage(description.value)
             }}>
               <input type='file' accept=".jpg, .jpeg, .png, .bmp, .gif" onChange={captureFile}/>
               <div className="form-group mr-sm-2">
