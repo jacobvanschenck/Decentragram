@@ -14,15 +14,19 @@ function App() {
   const [accounts, setAccounts] = useState([])
   const [buffer, setBuffer] = useState(undefined)
   const [loading, setLoading] = useState(false)
+  const [imageCount, setImageCount] = useState(0)
+  const [images, setImages] = useState([])
 
   useEffect(() => {
     const init = async () => {
       const web3 = await getWeb3()
       const contract = await getContract(web3)
       const accounts = await getAccounts()
+      const imageCount = await contract.methods.imageCount().call()
       setWeb3(web3)
       setDecentragram(contract)
       setAccounts(accounts)
+      setImageCount(imageCount)
     }
     init()
   }, [])
@@ -30,6 +34,19 @@ function App() {
   useEffect(() => {
     console.log(buffer)
   }, [buffer])
+
+  useEffect(() => {
+    const init = async () => {
+      if(decentragram){
+        for(let i = 0; i <= imageCount; i++){
+          const image = await decentragram.methods.images(i).call()
+          setImages([...images, image])
+          console.log(images)
+        }
+      }
+    }
+    init()
+  },[imageCount])
 
   const isReady = () => {
         return (
@@ -62,7 +79,8 @@ function App() {
       }
       
       setLoading(true)
-      await decentragram.methods.uploadImage(result[0].hash, description).send({from: accounts[0]}).on('transactionHash', (hash) => {
+      await decentragram.methods.uploadImage(result[0].hash, description).send({from: accounts[0]}).on('transactionHash', async (hash) => {
+        setImageCount(await decentragram.methods.imageCount().call())
         setLoading(false)
       })
     })
