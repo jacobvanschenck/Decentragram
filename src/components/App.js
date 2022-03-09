@@ -23,45 +23,37 @@ function App() {
       const contract = await getContract(web3)
       const accounts = await getAccounts()
       const imageCount = await contract.methods.imageCount().call()
+      const images = []
       setWeb3(web3)
       setDecentragram(contract)
       setAccounts(accounts)
-      setImageCount(imageCount)
-    }
-    init()
-  }, [])
-
-  useEffect(() => {
-    console.log(buffer)
-  }, [buffer])
-
-  useEffect(() => {
-    const init = async () => {
-      if(decentragram){
-        for(let i = 0; i <= imageCount; i++){
-          const image = await decentragram.methods.images(i).call()
-          setImages([...images, image])
-          console.log(images)
-        }
+      setImageCount(imageCount.toNumber())
+      for(let i = 1; i <= imageCount.toNumber(); i++){
+        const image = await contract.methods.images(i).call()
+        console.log(images)
+        images.push(image)
       }
+      setImages(images)
     }
     init()
-  },[imageCount])
+  }, [loading])
 
   const isReady = () => {
-        return (
-            typeof web3 !== 'undefined' &&
-            typeof decentragram !== 'undefined' &&
-            accounts.length > 0 &&
-            !loading
-        )
-    }
+    return (
+        typeof web3 !== 'undefined' &&
+        typeof decentragram !== 'undefined' &&
+        accounts.length > 0 &&
+        !loading
+    )
+  }
 
   const captureFile = event => {
     event.preventDefault()
     const file = event.target.files[0]
+    console.log(file)
     const reader = new window.FileReader()
     reader.readAsArrayBuffer(file)
+    console.log(reader.result)
 
     reader.onloadend = () => {
       setBuffer(Buffer(reader.result))
@@ -80,7 +72,9 @@ function App() {
       
       setLoading(true)
       await decentragram.methods.uploadImage(result[0].hash, description).send({from: accounts[0]}).on('transactionHash', async (hash) => {
-        setImageCount(await decentragram.methods.imageCount().call())
+        const count = await decentragram.methods.imageCount().call()
+        console.log(count)
+        setImageCount(count.toNumber())
         setLoading(false)
       })
     })
@@ -94,6 +88,7 @@ function App() {
         : <Main
           captureFile={captureFile}
           uploadImage={uploadImage}
+          images={images}
           />
       }
     </div>
