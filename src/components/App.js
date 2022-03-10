@@ -13,8 +13,7 @@ function App() {
   const [decentragram, setDecentragram] = useState(undefined)
   const [accounts, setAccounts] = useState([])
   const [buffer, setBuffer] = useState(undefined)
-  const [loading, setLoading] = useState(false)
-  const [imageCount, setImageCount] = useState(0)
+  const [loading, setLoading] = useState(true)
   const [images, setImages] = useState([])
 
   useEffect(() => {
@@ -23,20 +22,16 @@ function App() {
       const contract = await getContract(web3)
       const accounts = await getAccounts()
       const imageCount = await contract.methods.imageCount().call()
-      const images = []
+      const images = await loadImages(imageCount.toNumber(), contract)
       setWeb3(web3)
       setDecentragram(contract)
       setAccounts(accounts)
-      setImageCount(imageCount.toNumber())
-      for(let i = 1; i <= imageCount.toNumber(); i++){
-        const image = await contract.methods.images(i).call()
-        console.log(images)
-        images.push(image)
-      }
       setImages(images)
+      setLoading(false)
     }
     init()
-  }, [loading])
+  }, []
+  )
 
   const isReady = () => {
     return (
@@ -50,10 +45,8 @@ function App() {
   const captureFile = event => {
     event.preventDefault()
     const file = event.target.files[0]
-    console.log(file)
     const reader = new window.FileReader()
     reader.readAsArrayBuffer(file)
-    console.log(reader.result)
 
     reader.onloadend = () => {
       setBuffer(Buffer(reader.result))
@@ -71,10 +64,10 @@ function App() {
       }
       
       setLoading(true)
-      await decentragram.methods.uploadImage(result[0].hash, description).send({from: accounts[0]}).on('transactionHash', async (hash) => {
+      await decentragram.methods.uploadImage(result[0].hash, description).send({from: accounts[0]}).on('confirmation', async (hash) => {
         const count = await decentragram.methods.imageCount().call()
-        console.log(count)
-        setImageCount(count.toNumber())
+        const imagesArray = await loadImages(count.toNumber(), decentragram)
+        setImages(imagesArray)
         setLoading(false)
       })
     })
@@ -82,11 +75,22 @@ function App() {
 
   const tipImageOwner = async (id, tipAmount) => {
     setLoading(true)
-    await decentragram.methods.tipImageOwner(id).send({from: accounts[0], value: tipAmount}).on('transactionHash', async (hash) => {
-      console.log('not done')
+    await decentragram.methods.tipImageOwner(id).send({from: accounts[0], value: tipAmount}).on('confirmation', async (hash) => {
+      const count = await decentragram.methods.imageCount().call()
+      const imagesArray = await loadImages(count.toNumber(), decentragram)
+      setImages(imagesArray)
       setLoading(false)
-      console.log('done')
     })
+    
+  }
+
+  const loadImages = async (imageCount, decentragram) => {
+    const imageArray = []
+    for(let i = 1; i <= imageCount; i++){
+        const image = await decentragram.methods.images(i).call()
+        imageArray.push(image)
+      }
+    return imageArray.sort((a,b) => b.tipAmount - a.tipAmount)
   }
   
   return (

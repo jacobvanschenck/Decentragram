@@ -48,7 +48,7 @@ function Main({captureFile, uploadImage, images, tipImageOwner, web3}) {
                       <small className="text-muted">{image.author}</small>
                     </div>
                     <ul id="imageList" className="list-group list-group-flush">
-                      <li className="list-group-items">
+                      <li className="list-group-item">
                         <p className="text-center"><img src={`https://ipfs.infura.io/ipfs/${image.hash}`} style={{ maxWidth: '420px'}} alt=""/></p>
                         <p>{image.description}</p>
                       </li>
