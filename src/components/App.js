@@ -3,6 +3,7 @@ import {getWeb3, getContract, getAccounts} from './utils'
 import './App.css'
 import Navbar from './Navbar'
 import Main from './Main'
+import ConnectMetaMask from './ConnectMetaMask'
 
 const ipfsClient = require('ipfs-http-client')
 const ipfs = ipfsClient({host: 'ipfs.infura.io', port: 5001, protocol: 'https'})
@@ -15,23 +16,40 @@ function App() {
   const [buffer, setBuffer] = useState(undefined)
   const [loading, setLoading] = useState(true)
   const [images, setImages] = useState([])
+  const [isConnected, setIsConnected] = useState(false)
+  const [provider, setProvider] = useState(window.ethereum)
 
   useEffect(() => {
     const init = async () => {
-      const web3 = await getWeb3()
-      const contract = await getContract(web3)
-      const accounts = await getAccounts()
-      const imageCount = await contract.methods.imageCount().call()
-      const images = await loadImages(imageCount.toNumber(), contract)
-      setWeb3(web3)
-      setDecentragram(contract)
-      setAccounts(accounts)
-      setImages(images)
-      setLoading(false)
+      if(web3) {
+        const contract = await getContract(web3)
+        const accounts = await getAccounts()
+        const imageCount = await contract.methods.imageCount().call()
+        const images = await loadImages(imageCount.toNumber(), contract)
+        setDecentragram(contract)
+        setAccounts(accounts)
+        setImages(images)
+        setLoading(false)
+      }
     }
     init()
-  }, []
+  }, [web3]
   )
+
+  useEffect(() => {
+    const handleAccountsChanged = async () => {
+      const accounts = await web3.eth.getAccounts()
+      setAccounts(accounts)
+    }
+
+    if(isConnected) {
+      provider.on('accountsChanged', handleAccountsChanged)
+    }
+
+    return () => {
+      provider.removeListener('accountsChanged', handleAccountsChanged)
+    }
+  },[isConnected])
 
   const isReady = () => {
     return (
@@ -92,12 +110,18 @@ function App() {
       }
     return imageArray.sort((a,b) => b.tipAmount - a.tipAmount)
   }
+
+  const loadWeb3 = async () => {
+    const web3 = await getWeb3()
+    setWeb3(web3)
+    setIsConnected(true)
+  }
   
   return (
     <div>
-      <Navbar account={accounts[0]}/>
+      <Navbar loadWeb3={loadWeb3} account={accounts[0]}/>
       { !isReady()
-        ? <div id="loader" className="text-center mt-5"><p>Loading...</p></div>
+        ? (isConnected ? <div id="loader" className="text-center mt-5"><h2 className="mt-5">Loading...</h2></div> : <ConnectMetaMask loadWeb3={loadWeb3} />)
         : <Main
           captureFile={captureFile}
           uploadImage={uploadImage}
