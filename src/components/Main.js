@@ -11,27 +11,28 @@ function Main({captureFile, uploadImage, images, tipImageOwner, web3}) {
           <div className="content mr-auto ml-auto">
             <p>&nbsp;</p>
             
-            <h2>Share Image</h2>
+            <div className="card p-4 bg-light">
+              <h2>Share Image</h2>
 
-            <form onSubmit={(event) => {
-              event.preventDefault()
-              uploadImage(description.value)
-            }}>
-              <input type='file' accept=".jpg, .jpeg, .png, .bmp, .gif" onChange={captureFile}/>
-              <div className="form-group mr-sm-2">
-                <br></br>
-                <input 
-                  id="imageDescription"
-                  type="text"
-                  ref={(input) => {setDescription(input)}}
-                  className="form-control"
-                  placeholder="Image Description..."
-                  required
-                />
-              </div>
-              <button type="submit" className="btn btn-primary btn-block btn-lg">Upload!</button>
-            </form>
-
+              <form onSubmit={(event) => {
+                event.preventDefault()
+                uploadImage(description.value)
+              }}>
+                <input type='file' accept=".jpg, .jpeg, .png, .bmp, .gif" onChange={captureFile}/>
+                <div className="form-group mr-sm-2">
+                  <br></br>
+                  <input 
+                    id="imageDescription"
+                    type="text"
+                    ref={(input) => {setDescription(input)}}
+                    className="form-control"
+                    placeholder="Image Description..."
+                    required
+                  />
+                </div>
+                <button type="submit" className="btn btn-primary btn-block btn-lg">Upload!</button>
+              </form>
+            </div>
             <p>&nbsp;</p>
               
               {images.map((image, key) => {
@@ -57,7 +58,7 @@ function Main({captureFile, uploadImage, images, tipImageOwner, web3}) {
                           TIPS: {web3.utils.fromWei(image.tipAmount.toString(), 'Ether')} ETH
                         </small>
                         <button
-                          className="btn btn-link btn-sm float-right pt-0"
+                          className="btn btn-outline-primary btn-sm float-right px-2"
                           name={image.id}
                           onClick={(event) => {
                             let tipAmount = web3.utils.toWei('0.1', 'Ether')
