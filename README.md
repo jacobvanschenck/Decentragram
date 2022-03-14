@@ -65,21 +65,21 @@ Head over to `http://localhost:3000` and start using Decentragram!
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
-### Upload Image
+### Upload an Image
 
 ![upload-image GIF](https://github.com/jacobvanschenck/decentragram/blob/main/GIFs/upload-image.gif)
 
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
-### Tip Creator
+### Tip Creator | Transfers 0.1 ETH to the creator
 
 ![tip-author GIF](https://github.com/jacobvanschenck/decentragram/blob/main/GIFs/tip-author.gif)
 
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
-### Dynamic List Order
+### Dynamic List Order | Images with more tips sort to the top of the feed
 
 ![tipped-image--to-top GIF](https://github.com/jacobvanschenck/decentragram/blob/main/GIFs/tipped-image-to-top.gif)
 
