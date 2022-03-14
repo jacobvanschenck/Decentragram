@@ -1,4 +1,4 @@
-# Welcome to My Dex
+# Welcome to Decentragram
 
 ![DecentragramScreenshot](https://github.com/jacobvanschenck/decentragram/blob/main/GIFs/DecentragramScreenshot.png)
 
@@ -61,6 +61,27 @@ Head over to `http://localhost:3000` and start using Decentragram!
 ### Connects with Metamask
 
 ![ConnectToMetamask GIF](https://github.com/jacobvanschenck/decentragram/blob/main/GIFs/connectmetamask.gif)
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+### Upload Image
+
+![upload-image GIF](https://github.com/jacobvanschenck/decentragram/blob/main/GIFs/upload-image.gif)
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+### Tip Creator
+
+![tip-author GIF](https://github.com/jacobvanschenck/decentragram/blob/main/GIFs/tip-author.gif)
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+### Dynamic List Order
+
+![tipped-image--to-top GIF](https://github.com/jacobvanschenck/decentragram/blob/main/GIFs/tipped-image-to-top.gif)
 
 <p>&nbsp;</p>
 <p>&nbsp;</p>
