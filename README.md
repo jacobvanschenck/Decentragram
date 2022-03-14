@@ -1,6 +1,6 @@
 # Welcome to My Dex
 
-![DecentragramScreenshot]()
+![DecentragramScreenshot](https://github.com/jacobvanschenck/decentragram/blob/main/GIFs/DecentragramScreenshot.png)
 
 A **decentralized social media platform** to share photos and tip creators.
 
@@ -23,6 +23,7 @@ After that open up your terminal and run these commands:
 cd ProjectFolder
 npm install
 ```
+> Note: Make sure [MetaMask](https://metamask.io/) extension is added on your brower of choice
 
 ### Run Truffle Blockchain 🔗
 
@@ -59,7 +60,7 @@ Head over to `http://localhost:3000` and start using Decentragram!
 
 ### Connects with Metamask
 
-![ConnectToMetamask GIF]()
+![ConnectToMetamask GIF](https://github.com/jacobvanschenck/decentragram/blob/main/GIFs/connectmetamask.gif)
 
 <p>&nbsp;</p>
 <p>&nbsp;</p>
